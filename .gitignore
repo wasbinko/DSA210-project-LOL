@@ -1,0 +1,12 @@
+# PyCharm Settings
+.idea/
+.venv/
+venv/
+
+# Python/Jupyter Junk
+__pycache__/
+.ipynb_checkpoints/
+
+# Data
+data/
+*.py
