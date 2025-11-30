@@ -1,60 +1,52 @@
 # What Wins the Bot Lane: A League of Legends Data Analysis Project
 
-##  Project Overview
-This project investigates the relationship between champion draft synergies, early player performance and match outcomes in the 2v2 bottom lane in League of Legends. By analyzing historical data from high ranked matches from the 2024 and 2025 seasons, this project aims to point out the factors which best predict the winning lane (more kills or gold by minute 10), which mostly also shows who will even win the whole game in the end.
+## Project Overview
+This project investigates the relationship between champion draft synergies, early player performance, and match outcomes in the 2v2 bottom lane in League of Legends. By analyzing historical data from high-ranked matches, this project identifies whether early laning leads (Gold Difference @ 10 min) predict the final game winner and evaluates champion synergy using Machine Learning.
 
-The key research questions addressed in this project include:
-* How strongly does a champion duo's preexisting synergy, like their win rate together correlate with laning success, which is, for example, like who has more gold at minute 10 of the game.
-* Is achieving an early gold or kill lead more predictive of the final result or is it having a statistically favorable counterpick matchup from the draft?
-* Can a model accurately predict the gold difference in the bot lane based simply on the four champions selected?
-
----
-
-##  Motivation
-Picking your champion in League of Legends is the most essential part. Many players believe the game is often won or lost based on these picks. For bottom lane players, the ADC (main damager) and Support, it's really stressful to pick the right two champions. Most players just guess what is good based on what is popular or what they have heard is strong.
-
-This project will use data from thousands of real games to find the real answers. I want to help myself and maybe my friends make smarter picks.
+## Research Questions
+To address the project goals, this analysis focuses on the following key questions:
+* **RQ 1:** To what extent does an early economic lead (Gold Difference at 10 minutes) correlate with the final match victory?
+* **RQ 2:** Which specific ADC + Support combinations demonstrate the highest win rates in the current meta?
+* **RQ 3:** Can a Machine Learning model (Random Forest) accurately predict the match winner based solely on the four champions selected in the bot lane?
 
 ---
 
-##  Objectives
-* Find out if getting an early lead actually helps a player win the whole game.
-* Make a list of the strongest and weakest ADC (main damager) + Support pairs in the current meta.
-* Build a program that can predict who will win the laning phase just by looking at the four champions in the matchup.
-* Create charts to make the results easy to understand, like a heat map showing the win rate of every common bot lane combo.
+## Motivation
+Picking the right champion in League of Legends is a critical component of the game. Many players believe the match is often won or lost based on the draft phase alone. For bottom lane players—specifically the ADC (main damager) and Support—the pressure to select a synergistic pair is high. Currently, most players rely on intuition or anecdotal evidence. This project uses data from thousands of real games to replace guesswork with statistical evidence.
 
 ---
 
-##  Data Sources
-I will combine data from three places:
-
-* **Riot Games API:** This is my main source for raw match data.
-    * **Match Data:** Tells me who won, which champions were in the game, and final scores (KDA).
-    * **Timeline Data:** Gives me the minute details, like how many minions each player had at the 10 minute mark.
-
-* **Kaggle Datasets:** Prepackaged data files (CSVs) that others have already collected. They are great because the data is already clean and organized.
-
-* **Stats Websites :** Scrape data from these sites.
-    * Riot's data doesn't tell me a champion's overall win rate.
-    * Get stats like the win rate as a pair, or a specific champion's winrate against another.
-    * Use these numbers to measure synergy and counter pick strength.
+## Data Sources
+I utilized a hybrid data collection strategy to build a comprehensive dataset:
+1.  **Kaggle Dataset (Seed Data):** Used as a baseline to obtain valid Match IDs and final game outcomes (Win/Loss) for high-ELO matches.
+2.  **Riot Games API (Enrichment):**
+    * **Match-V5 Endpoint:** Extracted the specific champions played in the ADC and Support roles.
+    * **Timeline-V5 Endpoint:** Calculated the granular "Gold Difference at 10 Minutes" metric for every match.
 
 ---
 
-##  Data Collection Plan
+## Methodology
 
-### 1. Using the Riot API 
-* **Tool:** Python.
-* **How:** I'll use Python to connect to the Riot API after getting a developer key. The general process involves getting a list of high ranked players and then pulling their recent match histories. For each match, I'll download the main data like champions, and the timeline data like gold at 10 minutes. I will then use pandas to clean and organize this raw data.
+### 1. Data Collection & Processing
+* **Tools:** Python, Pandas, `riotwatcher` (for API rate limiting), `tqdm` (progress tracking).
+* **Pipeline:**
+    * Iterated through match IDs from the seed dataset.
+    * Filtered out invalid matches (e.g., remakes, non-standard lanes).
+    * Calculated the **Gold Differential** (Blue Bot Gold - Red Bot Gold) at frame 10 (10:00).
+    * Aggregated data into a structured CSV (`bot_lane_dataset.csv`) containing Champion names, Gold Stats, and Win Results.
 
-### 2. Using Kaggle
-I will use the according public dataset on Kaggle that will give me concrete information of kills, gold, exp and etc. to get more insight.
+### 2. Analysis & Modeling 
+* **Statistical Testing:** Performed a **Student's T-Test** to verify the significance of the relationship between early gold leads and victory.
+* **Visualization:** Created Boxplots (with jitter) to visualize gold distributions and Ranked Bar Charts to display Duo Win Rates.
 
-### 3. Using Web Scraping 
-* **Tool:** Python
-* **How:** A simple script that visits a stats website (like U.gg or OP.gg). It will read the site to find the win rates for champion pairs. I'll copy these numbers into my own file.
+---
 
-## Expected Outcomes
-* A clear, data-driven answer on whether early-game leads or good champion matchups are more important for winning.
-* A Synergy Matrix that visualizes the win rates of common ADC and Support combinations.
-* A simple predictive model that can estimate who will win the laning phase based on the four champions picked.
+## Key Findings (Preliminary)
+
+### 1. Early Leads Predict Wins
+* **Visual Evidence:** Boxplot analysis reveals a clear distinction in distributions. Winning teams consistently hold a higher median gold lead at 10 minutes compared to losing teams.
+* **Statistical Significance:** The Hypothesis Test resulted in a **P-Value < 0.05**, allowing us to reject the Null Hypothesis. This statistically confirms that gaining a gold advantage in the first 10 minutes is a significant predictor of winning the game.
+
+### 2. Duo Synergy
+* **Meta Analysis:** The analysis successfully identified high-performing pairs. The ranked bar chart highlighted distinct pairings with 100% win rates in the sample set, contrasting them with lower-performing off-meta combinations.
+
