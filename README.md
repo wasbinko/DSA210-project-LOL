@@ -8,6 +8,7 @@ To address the project goals, this analysis focuses on the following key questio
 * **RQ 1:** To what extent does an early economic lead (Gold Difference at 10 minutes) correlate with the final match victory?
 * **RQ 2:** Which specific ADC + Support combinations demonstrate the highest win rates in the current meta?
 * **RQ 3:** Can a Machine Learning model (Random Forest) accurately predict the match winner based solely on the four champions selected in the bot lane?
+* **RQ 4:** Can we automatically classify bot lane duos into performance tiers (e.g., 'OP' vs. 'Weak') without human bias?
 
 ---
 
