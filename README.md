@@ -1,3 +1,7 @@
+## Bot Lane Dynamics: Analyzing Synergy & Win Conditions in League of Legends
+* **DSA210 Project**
+* **Student Name: Nazim Mammadov**
+* **Student ID: 33525**
 ## Project Overview
 This project investigates the relationship between champion draft synergies, early player performance, and match outcomes in the 2v2 bottom lane in League of Legends. By analyzing historical data from high-ranked matches, this project identifies whether early laning leads (Gold Difference @ 10 min) predict the final game winner and evaluates champion synergy using Machine Learning.
 
@@ -23,6 +27,26 @@ I utilized a hybrid data collection strategy to build a comprehensive dataset:
     * **Timeline-V5 Endpoint:** Calculated the granular "Gold Difference at 10 Minutes" metric for every match.
 
 ---
+## How to Run
+
+1.  **Clone the repository**
+    ```bash
+    git clone [https://github.com/wasbinko/dsa210-project-lol.git](https://github.com/wasbinko/dsa210-project-lol.git)
+    cd dsa210-project-lol
+    ```
+
+2.  **Install Dependencies**
+    Ensure you have Python installed, then run:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+3.  **Run the Analysis**
+    * To view the full analysis, code, and visualizations, open the Jupyter Notebook:
+        ```bash
+        jupyter notebook forgit.ipynb
+        ```
+    * *Note: The raw data is located in the `data/` folder. If you wish to fetch fresh data, you will need a valid Riot Games API key.*
 
 ## Methodology
 
@@ -45,7 +69,7 @@ I utilized a hybrid data collection strategy to build a comprehensive dataset:
 * **Duo Clustering (K-Means):**
    *  **Model:** K-Means Clustering with **k=4**.
        * **Features:** Win Rate and Average Gold Difference @ 10.
-       * **Goal:** Group bot lane pairs into S, A, B, and C performance tiers.
+       * **Goal:** Group bot lane pairs into performance tiers.
 ---
 
 ## Key Findings
@@ -96,7 +120,7 @@ Using **K-Means Clustering (k=4)**, the algorithm automatically categorized bot 
 * **A-Tier (Strong):** Win Rates between **52% and 58%**. The "Reliable" tier. Interestingly, these duos tend to go slightly negative or even in the laning phase, yet they maintain a high win rate. This suggests these combinations rely on **mid-to-late game scaling** or teamfight utility rather than early lane dominance. They are safe, resilient choices that recover well..
 * **C-Tier (Meh):** Win Rates hovering around **33-41%**. These duos are "Empty Stats." Their laning phase looks statistically similar to Tier A (only a small gold deficit), but they fail to convert into wins, resulting in the lowest win rate of all clusters. These picks survive the lane but likely lack the scaling(bad levelling up percentage) or team synergy to impact the outcome of the match.
 * **F-Tier (Very bad):** Win Rates **< 41%** The "Disaster" tier. These duos suffer massive deficits during the laning phase, falling nearly 700 gold behind on average. While their win rate is technically slightly higher than Tier C, the sheer volatility of their laning phase makes them extremely risky and generally unviable.
-### Cluster Averages (Interpretation)
+### Cluster Averages
 
 | Cluster | Win Rate | Bot Gold Diff @ 10 |
 | :---: | :---: | :---: |
@@ -109,3 +133,25 @@ Using **K-Means Clustering (k=4)**, the algorithm automatically categorized bot 
 
 <img src="output/performance_kmeans.png" alt="" style="height: 500px; width:800px;"/>
 
+## Limitations & Future Work
+
+While this analysis provides significant insights into bot lane dynamics, several limitations should be noted:
+
+* **Patch Unpredictability:** League of Legends updates every two weeks. This dataset reflects a specific patch cycle, and champion strengths (win rates) may vary significantly in future patches due to buffs or nerfs.
+* **Rank Disparity:** The analysis focuses on "High-ELO" matches to ensure data quality. Consequently, the "S-Tier" picks identified here may not perform as effectively in lower ranks (Iron-Gold) where mechanical skill varies.
+* **Sample Size for Off-Meta Picks:** Rare duos (like Kaisa + Alistar) have smaller sample sizes, making their win rate data less statistically robust than popular pairings like Jinx + Thresh.
+
+**Future Work:**
+To expand on this project, future iterations could include:
+* **Jungle Influence:** Integrating data on Jungle ganks to see how external pressure influences the 2v2 lane outcome.
+* **Match Duration Analysis:** Filtering specifically for long vs. short games to see which duos fall off hardest after 30 minutes.
+
+## AI Usage Declaration
+
+In accordance with the academic integrity policy, I disclose the use of AI tools in this project:
+
+* **Tool Used:** Google Gemini
+* **Purpose:**
+    * Formatting text into clean Markdown format for this report.
+    * Refining the structure and clarity of the README file.
+* **Verification:** All code logic, data collection, and analytical conclusions were implemented and verified manually by the author(me).
