@@ -57,6 +57,24 @@ I utilized a hybrid data collection strategy to build a comprehensive dataset:
 <img src="output/gold_diff_boxplot.png" alt="" style="height: 500px; width:800px;"/>
 
 ### Strongest & Weakest Duos
+### Top 5 Strongest Duos
+| Blue Duo | Win Rate | Games Played | Bot Gold Diff @ 10 |
+| :--- | :---: | :---: | :---: |
+| **Jinx + Thresh** | 72.0% | 25 | 166.76 |
+| **Jinx + Blitzcrank** | 70.0% | 10 | 116.60 |
+| **Twitch + Milio** | 70.0% | 10 | 657.70 |
+| **Draven + Nautilus** | 66.7% | 12 | 567.92 |
+| **Ashe + Janna** | 64.3% | 14 | 365.00 |
+
+### Bottom 5 Weakest Duos
+| Blue Duo | Win Rate | Games Played | Bot Gold Diff @ 10 |
+| :--- | :---: | :---: | :---: |
+| **Kaisa + Braum** | 20.0% | 10 | -130.00 |
+| **Kaisa + Alistar** | 30.0% | 10 | -1145.90 |
+| **Samira + Nautilus** | 33.3% | 12 | -431.25 |
+| **Zeri + Milio** | 33.3% | 12 | 66.92 |
+| **Zeri + Lulu** | 35.0% | 20 | -173.95 |
+
 * **Top Performers:** **Jinx + Thresh** (~72% Win Rate) and **Twitch + Milio** (~70% Win Rate) represent high-synergy pairings.
 * **Underperformers:** **Kaisa + Braum** (~20% Win Rate) and **Kaisa + Alistar** (~30% Win Rate) show significantly lower synergy in the current dataset.
 * **Visualization:** (Mostly shows the top and mid tier duos, with the lower tiers not seen due to the sheer amount of them and inability to show that all in a graph)
@@ -74,12 +92,20 @@ I utilized a hybrid data collection strategy to build a comprehensive dataset:
 
 ### Automated Tier List (Clustering)
 Using **K-Means Clustering (k=4)**, the algorithm automatically categorized bot lane duos into tiers:
-* **S-Tier (Dominant) (Cluster ID: 2):** Win Rates **> 60%** and consistent positive gold leads. These are the "Meta Kings" (e.g., Jinx + Thresh).
-* **A-Tier (Strong):** Win Rates between **52% and 58%**. Consistent, reliable meta staples.
-* **B-Tier (Balanced):** Win Rates hovering around **48-51%**. These are situational picks that do not provide an inherent statistical advantage.
-* **C-Tier (Suboptimal):** Win Rates **< 45%** with negative average gold differences. These pairs statistically put their team at a disadvantage.
+* **S-Tier (Dominant) (Cluster ID: 2):** Win Rates **> 60%** and consistent positive gold leads. These are the dominant meta picks. They consistently win the laning phase by a significant margin (nearly +500 gold lead early) and convert that advantage into game wins. These duos are high-priority "Pick or Ban" candidates.
+* **A-Tier (Strong):** Win Rates between **52% and 58%**. The "Reliable" tier. Interestingly, these duos tend to go slightly negative or even in the laning phase, yet they maintain a high win rate. This suggests these combinations rely on **mid-to-late game scaling** or teamfight utility rather than early lane dominance. They are safe, resilient choices that recover well..
+* **C-Tier (Meh):** Win Rates hovering around **33-41%**. These duos are "Empty Stats." Their laning phase looks statistically similar to Tier A (only a small gold deficit), but they fail to convert into wins, resulting in the lowest win rate of all clusters. These picks survive the lane but likely lack the scaling(bad levelling up percentage) or team synergy to impact the outcome of the match.
+* **F-Tier (Very bad):** Win Rates **< 41%** The "Disaster" tier. These duos suffer massive deficits during the laning phase, falling nearly 700 gold behind on average. While their win rate is technically slightly higher than Tier C, the sheer volatility of their laning phase makes them extremely risky and generally unviable.
+### Cluster Averages (Interpretation)
 
-**Visualization:** We can confirm that the S-Tier cluster(Cluster ID:2), has the biggest positive gold difference and subsequently the highest win rate, and in contrast C-tier (Cluster ID: 3) have the biggest negative gold difference, and the lowest win rate.
+| Cluster | Win Rate | Bot Gold Diff @ 10 |
+| :---: | :---: | :---: |
+| **2** (S) | 66.7% | 482.78 |
+| **1** (A) | 56.8% | -125.98 |
+| **0** (C) | 36.4% | -123.33 |
+| **3** (F) | 37.1% | -679.34 |
+
+**Visualization:** We can confirm that the S-Tier cluster(Cluster ID:2), has the biggest positive gold difference and subsequently the highest win rate, and in contrast F-tier (Cluster ID: 3) have the biggest negative gold difference, and almost the lowest win rate.
 
 <img src="output/performance_kmeans.png" alt="" style="height: 500px; width:800px;"/>
 
